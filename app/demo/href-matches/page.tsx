@@ -67,17 +67,21 @@ export default function HrefMatchesDemo() {
             </div>
 
             <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-              This pattern matches any URL containing{" "}
+              This pattern matches URLs with a locale format{" "}
+              <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
+                /*-*/
+              </code>{" "}
+              (e.g., /en-id/, /en-us/, /th-th/), followed by{" "}
               <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
                 /flight/
-              </code>{" "}
-              followed by{" "}
+              </code>
+              , and containing{" "}
               <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
                 search
-              </code>{" "}
-              in any locale (e.g., /en-id/, /en-us/, /th-th/). The eagerness
-              level is set to "moderate", which means prerendering is triggered
-              when you hover over a matching link for 200ms.
+              </code>
+              . The eagerness level is set to "moderate", which means
+              prerendering is triggered when you hover over a matching link for
+              200ms.
             </p>
           </div>
 

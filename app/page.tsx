@@ -58,7 +58,7 @@ export default function Home() {
                 Pattern-based URL matching using wildcards
               </p>
               <div className="mt-auto text-xs font-mono text-zinc-500 dark:text-zinc-500">
-                href_matches: &quot;*/flight/*search*&quot;
+                href_matches: &quot;/*-*/flight/*search*&quot;
               </div>
             </Link>
 
