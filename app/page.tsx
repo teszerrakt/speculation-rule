@@ -17,7 +17,7 @@ export default function Home() {
           prerender: [
             {
               where: {
-                and: [{ href_matches: "/en-id/flight/*search*" }],
+                and: [{ href_matches: "/*-*/flight/*search*" }],
               },
               eagerness: "moderate",
             },

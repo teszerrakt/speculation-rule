@@ -11,7 +11,7 @@ const SPECULATION_RULE_CONFIG = {
   prerender: [
     {
       where: {
-        and: [{ href_matches: "/en-id/flight/*search*" }],
+        and: [{ href_matches: "/*-*/flight/*search*" }],
       },
       eagerness: "moderate",
     },
@@ -67,17 +67,17 @@ export default function HrefMatchesDemo() {
             </div>
 
             <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-              This pattern matches any URL starting with{" "}
+              This pattern matches any URL containing{" "}
               <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
-                /en-id/flight/
+                /flight/
               </code>{" "}
-              and containing{" "}
+              followed by{" "}
               <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
                 search
-              </code>
-              . The eagerness level is set to "moderate", which means
-              prerendering is triggered when you hover over a matching link for
-              200ms.
+              </code>{" "}
+              in any locale (e.g., /en-id/, /en-us/, /th-th/). The eagerness
+              level is set to "moderate", which means prerendering is triggered
+              when you hover over a matching link for 200ms.
             </p>
           </div>
 
