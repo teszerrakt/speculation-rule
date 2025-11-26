@@ -1,6 +1,5 @@
 import Link from "next/link";
 import ProgressBar from "@/app/components/ProgressBar";
-import PrerenderStatus from "@/app/components/PrerenderStatus";
 
 export default async function FullTwoSearchPage({
   searchParams,
@@ -29,7 +28,6 @@ export default async function FullTwoSearchPage({
       <main className="flex flex-col items-center gap-8 sm:items-start">
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-bold">Flight Search (Round Trip)</h1>
-          <PrerenderStatus />
         </div>
 
         <div className="w-full rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">

@@ -7,22 +7,28 @@ export default function ProgressBar() {
 
   useEffect(() => {
     const duration = 5000; // 5 seconds
-    const interval = 50; // Update every 50ms
-    const increment = (interval / duration) * 100;
+    const startTime = performance.now();
 
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        const next = prev + increment;
-        console.log("Updating progress...", next);
-        if (next >= 100) {
-          clearInterval(timer);
-          return 100;
-        }
-        return next;
-      });
-    }, interval);
+    let animationFrameId: number;
 
-    return () => clearInterval(timer);
+    const updateProgress = () => {
+      const elapsed = performance.now() - startTime;
+      const currentProgress = Math.min((elapsed / duration) * 100, 100);
+
+      setProgress(currentProgress);
+
+      if (currentProgress < 100) {
+        animationFrameId = requestAnimationFrame(updateProgress);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(updateProgress);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
   return (
