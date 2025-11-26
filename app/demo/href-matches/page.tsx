@@ -7,6 +7,17 @@ export const metadata: Metadata = {
   description: "Demonstration of href_matches speculation rule pattern",
 };
 
+const SPECULATION_RULE_CONFIG = {
+  prerender: [
+    {
+      where: {
+        and: [{ href_matches: "/en-id/flight/*search*" }],
+      },
+      eagerness: "moderate",
+    },
+  ],
+};
+
 function SpeculationRules({ config }: { config: object }) {
   return (
     <Script id="speculation-rules" type="speculationrules">
@@ -18,18 +29,7 @@ function SpeculationRules({ config }: { config: object }) {
 export default function HrefMatchesDemo() {
   return (
     <>
-      <SpeculationRules
-        config={{
-          prerender: [
-            {
-              where: {
-                and: [{ href_matches: "/en-id/flight/*search*" }],
-              },
-              eagerness: "moderate",
-            },
-          ],
-        }}
-      />
+      <SpeculationRules config={SPECULATION_RULE_CONFIG} />
 
       <div className="grid min-h-screen items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
         <main className="flex max-w-3xl flex-col gap-8">
@@ -62,18 +62,7 @@ export default function HrefMatchesDemo() {
                 Current Rule:
               </p>
               <pre className="overflow-x-auto rounded bg-zinc-100 p-3 text-xs dark:bg-zinc-800">
-                {`{
-  "prerender": [
-    {
-      "where": {
-        "and": [
-          { "href_matches": "/en-id/flight/*search*" }
-        ]
-      },
-      "eagerness": "moderate"
-    }
-  ]
-}`}
+                {JSON.stringify(SPECULATION_RULE_CONFIG, null, 2)}
               </pre>
             </div>
 
@@ -100,7 +89,7 @@ export default function HrefMatchesDemo() {
             </p>
 
             <div className="space-y-3">
-              <Link
+              <a
                 href="/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY"
                 className="block rounded-lg border border-zinc-200 bg-zinc-50 p-4 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-700"
               >
@@ -108,9 +97,9 @@ export default function HrefMatchesDemo() {
                 <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                   /en-id/flight/fullsearch
                 </div>
-              </Link>
+              </a>
 
-              <Link
+              <a
                 href="/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY"
                 className="block rounded-lg border border-zinc-200 bg-zinc-50 p-4 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-700"
               >
@@ -118,7 +107,7 @@ export default function HrefMatchesDemo() {
                 <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                   /en-id/flight/fulltwosearch
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
 

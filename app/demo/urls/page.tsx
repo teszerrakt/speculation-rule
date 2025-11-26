@@ -7,6 +7,18 @@ export const metadata: Metadata = {
   description: "Demonstration of explicit URLs speculation rule pattern",
 };
 
+const SPECULATION_RULE_CONFIG = {
+  prerender: [
+    {
+      urls: [
+        "/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY",
+        "/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY",
+      ],
+      eagerness: "immediate",
+    },
+  ],
+};
+
 function SpeculationRules({ config }: { config: object }) {
   return (
     <Script id="speculation-rules" type="speculationrules">
@@ -18,19 +30,7 @@ function SpeculationRules({ config }: { config: object }) {
 export default function UrlsDemo() {
   return (
     <>
-      <SpeculationRules
-        config={{
-          prerender: [
-            {
-              urls: [
-                "/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY",
-                "/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY",
-              ],
-              eagerness: "immediate",
-            },
-          ],
-        }}
-      />
+      <SpeculationRules config={SPECULATION_RULE_CONFIG} />
 
       <div className="grid min-h-screen items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
         <main className="flex max-w-3xl flex-col gap-8">
@@ -63,17 +63,7 @@ export default function UrlsDemo() {
                 Current Rule:
               </p>
               <pre className="overflow-x-auto rounded bg-zinc-100 p-3 text-xs dark:bg-zinc-800">
-                {`{
-  "prerender": [
-    {
-      "urls": [
-        "/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY",
-        "/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY"
-      ],
-      "eagerness": "immediate"
-    }
-  ]
-}`}
+                {JSON.stringify(SPECULATION_RULE_CONFIG, null, 2)}
               </pre>
             </div>
 
@@ -81,8 +71,8 @@ export default function UrlsDemo() {
               Only these exact URLs (including query parameters) will be
               prerendered, regardless of whether there are links to them on the
               page. The eagerness level is set to "immediate", which means these
-              URLs are prerendered as soon as the page loads, without waiting for
-              any user interaction.
+              URLs are prerendered as soon as the page loads, without waiting
+              for any user interaction.
             </p>
           </div>
 

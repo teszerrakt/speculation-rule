@@ -7,6 +7,17 @@ export const metadata: Metadata = {
   description: "Demonstration of selector_matches speculation rule pattern",
 };
 
+const SPECULATION_RULE_CONFIG = {
+  prerender: [
+    {
+      where: {
+        and: [{ selector_matches: ".prerender-link" }],
+      },
+      eagerness: "moderate",
+    },
+  ],
+};
+
 function SpeculationRules({ config }: { config: object }) {
   return (
     <Script id="speculation-rules" type="speculationrules">
@@ -18,18 +29,7 @@ function SpeculationRules({ config }: { config: object }) {
 export default function SelectorMatchesDemo() {
   return (
     <>
-      <SpeculationRules
-        config={{
-          prerender: [
-            {
-              where: {
-                and: [{ selector_matches: ".prerender-link" }],
-              },
-              eagerness: "moderate",
-            },
-          ],
-        }}
-      />
+      <SpeculationRules config={SPECULATION_RULE_CONFIG} />
 
       <div className="grid min-h-screen items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
         <main className="flex max-w-3xl flex-col gap-8">
@@ -62,18 +62,7 @@ export default function SelectorMatchesDemo() {
                 Current Rule:
               </p>
               <pre className="overflow-x-auto rounded bg-zinc-100 p-3 text-xs dark:bg-zinc-800">
-                {`{
-  "prerender": [
-    {
-      "where": {
-        "and": [
-          { "selector_matches": ".prerender-link" }
-        ]
-      },
-      eagerness: "moderate",
-    }
-  ]
-}`}
+                {JSON.stringify(SPECULATION_RULE_CONFIG, null, 2)}
               </pre>
             </div>
 
