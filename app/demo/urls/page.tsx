@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,22 +7,28 @@ export const metadata: Metadata = {
   description: "Demonstration of explicit URLs speculation rule pattern",
 };
 
+function SpeculationRules({ config }: { config: object }) {
+  return (
+    <Script id="speculation-rules" type="speculationrules">
+      {JSON.stringify(config)}
+    </Script>
+  );
+}
+
 export default function UrlsDemo() {
   return (
     <>
-      <script
-        type="speculationrules"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            prerender: [
-              {
-                urls: [
-                  "/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY",
-                  "/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY",
-                ],
-              },
-            ],
-          }),
+      <SpeculationRules
+        config={{
+          prerender: [
+            {
+              urls: [
+                "/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY",
+                "/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY",
+              ],
+              eagerness: "immediate",
+            },
+          ],
         }}
       />
 
@@ -43,8 +50,12 @@ export default function UrlsDemo() {
           <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             <h2 className="mb-4 text-xl font-semibold">How it works</h2>
             <p className="mb-4 text-zinc-600 dark:text-zinc-400">
-              The <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">urls</code> pattern
-              allows you to specify an explicit array of URLs to prerender. This is the most precise method.
+              The{" "}
+              <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
+                urls
+              </code>{" "}
+              pattern allows you to specify an explicit array of URLs to
+              prerender. This is the most precise method.
             </p>
 
             <div className="rounded bg-zinc-50 p-4 dark:bg-zinc-950">
@@ -52,13 +63,14 @@ export default function UrlsDemo() {
                 Current Rule:
               </p>
               <pre className="overflow-x-auto rounded bg-zinc-100 p-3 text-xs dark:bg-zinc-800">
-{`{
+                {`{
   "prerender": [
     {
       "urls": [
         "/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY",
         "/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY"
-      ]
+      ],
+      "eagerness": "immediate"
     }
   ]
 }`}
@@ -66,8 +78,11 @@ export default function UrlsDemo() {
             </div>
 
             <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-              Only these exact URLs (including query parameters) will be prerendered, regardless of whether
-              there are links to them on the page.
+              Only these exact URLs (including query parameters) will be
+              prerendered, regardless of whether there are links to them on the
+              page. The eagerness level is set to "immediate", which means these
+              URLs are prerendered as soon as the page loads, without waiting for
+              any user interaction.
             </p>
           </div>
 
@@ -115,7 +130,9 @@ export default function UrlsDemo() {
                 href="/en-id/flight/fullsearch?ap=DPS.CGK&dt=01-01-2026.NA&ps=1.0.0&sc=ECONOMY"
                 className="block rounded-lg border border-red-200 bg-red-50 p-4 transition-colors hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:hover:bg-red-900"
               >
-                <div className="font-medium">Different Flight Search (No Prerender)</div>
+                <div className="font-medium">
+                  Different Flight Search (No Prerender)
+                </div>
                 <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                   /en-id/flight/fullsearch?ap=DPS.CGK&dt=01-01-2026.NA&ps=1.0.0&sc=ECONOMY
                 </div>
@@ -133,7 +150,9 @@ export default function UrlsDemo() {
             <ul className="list-inside list-disc space-y-1 text-sm text-blue-800 dark:text-blue-200">
               <li>High-traffic pages you want to prerender immediately</li>
               <li>Critical user journeys (e.g., checkout flow)</li>
-              <li>Pages that don&apos;t have links but you know users will visit</li>
+              <li>
+                Pages that don&apos;t have links but you know users will visit
+              </li>
               <li>When you need precise control over what gets prerendered</li>
             </ul>
           </div>

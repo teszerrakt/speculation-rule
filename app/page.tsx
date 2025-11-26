@@ -1,20 +1,27 @@
 import Link from "next/link";
+import Script from "next/script";
+
+function SpeculationRules({ config }: { config: object }) {
+  return (
+    <Script id="speculation-rules" type="speculationrules">
+      {JSON.stringify(config)}
+    </Script>
+  );
+}
 
 export default function Home() {
   return (
     <>
-      <script
-        type="speculationrules"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            prerender: [
-              {
-                where: {
-                  and: [{ href_matches: "*/flight/*search*" }],
-                },
+      <SpeculationRules
+        config={{
+          prerender: [
+            {
+              where: {
+                and: [{ href_matches: "/en-id/flight/*search*" }],
               },
-            ],
-          }),
+              eagerness: "moderate",
+            },
+          ],
         }}
       />
 
@@ -23,16 +30,18 @@ export default function Home() {
           <div className="flex flex-col gap-4 text-center">
             <h1 className="text-5xl font-bold">Speculation Rules API Demo</h1>
             <p className="text-lg text-zinc-600 dark:text-zinc-400">
-              Test different prerendering strategies with the Speculation Rules API
+              Test different prerendering strategies with the Speculation Rules
+              API
             </p>
           </div>
 
           <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             <h2 className="mb-2 text-2xl font-semibold">What is this?</h2>
             <p className="text-zinc-600 dark:text-zinc-400">
-              The Speculation Rules API allows browsers to prerender pages before users navigate to them,
-              resulting in instant page loads. This demo showcases three different methods to specify
-              which pages should be prerendered.
+              The Speculation Rules API allows browsers to prerender pages
+              before users navigate to them, resulting in instant page loads.
+              This demo showcases three different methods to specify which pages
+              should be prerendered.
             </p>
           </div>
 
@@ -86,57 +95,22 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="rounded-lg border border-blue-200 bg-blue-50 p-6 dark:border-blue-900 dark:bg-blue-950">
-            <h3 className="mb-3 text-lg font-semibold text-blue-900 dark:text-blue-100">
-              Quick Test: Direct Flight Links
-            </h3>
-            <p className="mb-4 text-sm text-blue-800 dark:text-blue-200">
-              These links use the <code className="rounded bg-blue-100 px-2 py-1 dark:bg-blue-900">href_matches</code> rule
-              active on this page. They should load instantly:
-            </p>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <Link
-                href="/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY"
-                className="flex items-center gap-2 rounded-lg border border-blue-300 bg-white p-4 transition-colors hover:bg-blue-100 dark:border-blue-800 dark:bg-blue-900 dark:hover:bg-blue-800"
-              >
-                <span className="text-2xl">✈️</span>
-                <div className="flex-1">
-                  <div className="font-medium text-blue-900 dark:text-blue-100">
-                    One Way Flight
-                  </div>
-                  <div className="text-xs text-blue-700 dark:text-blue-300">
-                    CGK → SIN
-                  </div>
-                </div>
-              </Link>
-
-              <Link
-                href="/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY"
-                className="flex items-center gap-2 rounded-lg border border-blue-300 bg-white p-4 transition-colors hover:bg-blue-100 dark:border-blue-800 dark:bg-blue-900 dark:hover:bg-blue-800"
-              >
-                <span className="text-2xl">🔄</span>
-                <div className="flex-1">
-                  <div className="font-medium text-blue-900 dark:text-blue-100">
-                    Round Trip Flight
-                  </div>
-                  <div className="text-xs text-blue-700 dark:text-blue-300">
-                    CGK ⇄ SIN
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </div>
-
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-6 dark:border-amber-900 dark:bg-amber-950">
             <h3 className="mb-3 text-lg font-semibold text-amber-900 dark:text-amber-100">
               How to use this demo
             </h3>
             <ol className="list-inside list-decimal space-y-2 text-sm text-amber-800 dark:text-amber-200">
-              <li>Open Chrome DevTools (F12) → Application tab → Speculation Rules</li>
-              <li>Choose a demo above to see different speculation rule patterns</li>
+              <li>
+                Open Chrome DevTools (F12) → Application tab → Speculation Rules
+              </li>
+              <li>
+                Choose a demo above to see different speculation rule patterns
+              </li>
               <li>Watch the Network tab to see prerender requests</li>
               <li>Click the test links and notice instant page loads</li>
-              <li>Each demo page explains its specific pattern with examples</li>
+              <li>
+                Each demo page explains its specific pattern with examples
+              </li>
             </ol>
           </div>
 

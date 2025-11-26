@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,21 +7,27 @@ export const metadata: Metadata = {
   description: "Demonstration of href_matches speculation rule pattern",
 };
 
+function SpeculationRules({ config }: { config: object }) {
+  return (
+    <Script id="speculation-rules" type="speculationrules">
+      {JSON.stringify(config)}
+    </Script>
+  );
+}
+
 export default function HrefMatchesDemo() {
   return (
     <>
-      <script
-        type="speculationrules"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            prerender: [
-              {
-                where: {
-                  and: [{ href_matches: "*/flight/*search*" }],
-                },
+      <SpeculationRules
+        config={{
+          prerender: [
+            {
+              where: {
+                and: [{ href_matches: "/en-id/flight/*search*" }],
               },
-            ],
-          }),
+              eagerness: "moderate",
+            },
+          ],
         }}
       />
 
@@ -42,8 +49,12 @@ export default function HrefMatchesDemo() {
           <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             <h2 className="mb-4 text-xl font-semibold">How it works</h2>
             <p className="mb-4 text-zinc-600 dark:text-zinc-400">
-              The <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">href_matches</code> pattern
-              allows you to specify URL patterns using wildcards. Any link matching the pattern will be prerendered.
+              The{" "}
+              <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
+                href_matches
+              </code>{" "}
+              pattern allows you to specify URL patterns using wildcards. Any
+              link matching the pattern will be prerendered.
             </p>
 
             <div className="rounded bg-zinc-50 p-4 dark:bg-zinc-950">
@@ -51,14 +62,15 @@ export default function HrefMatchesDemo() {
                 Current Rule:
               </p>
               <pre className="overflow-x-auto rounded bg-zinc-100 p-3 text-xs dark:bg-zinc-800">
-{`{
+                {`{
   "prerender": [
     {
       "where": {
         "and": [
-          { "href_matches": "*/flight/*search*" }
+          { "href_matches": "/en-id/flight/*search*" }
         ]
-      }
+      },
+      "eagerness": "moderate"
     }
   ]
 }`}
@@ -66,15 +78,25 @@ export default function HrefMatchesDemo() {
             </div>
 
             <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-              This pattern matches any URL containing <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">/flight/</code> followed
-              by any text containing <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">search</code>.
+              This pattern matches any URL starting with{" "}
+              <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
+                /en-id/flight/
+              </code>{" "}
+              and containing{" "}
+              <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
+                search
+              </code>
+              . The eagerness level is set to "moderate", which means
+              prerendering is triggered when you hover over a matching link for
+              200ms.
             </p>
           </div>
 
           <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             <h2 className="mb-4 text-xl font-semibold">Test Links</h2>
             <p className="mb-4 text-sm text-zinc-600 dark:text-zinc-400">
-              Click these links to see instant navigation (they should be prerendered):
+              Hover over these links to trigger prerendering, then click to see
+              instant navigation:
             </p>
 
             <div className="space-y-3">
@@ -109,6 +131,7 @@ export default function HrefMatchesDemo() {
               <li>Go to Application → Speculation Rules</li>
               <li>See the active prerender rules and matched URLs</li>
               <li>Check Network tab for prerender requests</li>
+              <li>Hover over links for 200ms to trigger prerendering</li>
               <li>Click links and notice instant navigation</li>
             </ol>
           </div>

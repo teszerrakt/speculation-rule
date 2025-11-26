@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,21 +7,27 @@ export const metadata: Metadata = {
   description: "Demonstration of selector_matches speculation rule pattern",
 };
 
+function SpeculationRules({ config }: { config: object }) {
+  return (
+    <Script id="speculation-rules" type="speculationrules">
+      {JSON.stringify(config)}
+    </Script>
+  );
+}
+
 export default function SelectorMatchesDemo() {
   return (
     <>
-      <script
-        type="speculationrules"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            prerender: [
-              {
-                where: {
-                  and: [{ selector_matches: ".prerender-link" }],
-                },
+      <SpeculationRules
+        config={{
+          prerender: [
+            {
+              where: {
+                and: [{ selector_matches: ".prerender-link" }],
               },
-            ],
-          }),
+              eagerness: "moderate",
+            },
+          ],
         }}
       />
 
@@ -42,8 +49,12 @@ export default function SelectorMatchesDemo() {
           <div className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
             <h2 className="mb-4 text-xl font-semibold">How it works</h2>
             <p className="mb-4 text-zinc-600 dark:text-zinc-400">
-              The <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">selector_matches</code> pattern
-              allows you to target specific links using CSS selectors. Only links matching the selector will be prerendered.
+              The{" "}
+              <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
+                selector_matches
+              </code>{" "}
+              pattern allows you to target specific links using CSS selectors.
+              Only links matching the selector will be prerendered.
             </p>
 
             <div className="rounded bg-zinc-50 p-4 dark:bg-zinc-950">
@@ -51,14 +62,15 @@ export default function SelectorMatchesDemo() {
                 Current Rule:
               </p>
               <pre className="overflow-x-auto rounded bg-zinc-100 p-3 text-xs dark:bg-zinc-800">
-{`{
+                {`{
   "prerender": [
     {
       "where": {
         "and": [
           { "selector_matches": ".prerender-link" }
         ]
-      }
+      },
+      eagerness: "moderate",
     }
   ]
 }`}
@@ -66,7 +78,13 @@ export default function SelectorMatchesDemo() {
             </div>
 
             <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-              This pattern matches any link with the <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">prerender-link</code> CSS class.
+              This pattern matches any link with the{" "}
+              <code className="rounded bg-zinc-100 px-2 py-1 dark:bg-zinc-800">
+                prerender-link
+              </code>{" "}
+              CSS class. The eagerness level is set to "moderate", which means
+              prerendering is triggered when you hover over a matching link for
+              200ms.
             </p>
           </div>
 
@@ -114,7 +132,9 @@ export default function SelectorMatchesDemo() {
                 href="/en-id/flight/fullsearch?ap=DPS.CGK&dt=01-01-2026.NA&ps=1.0.0&sc=ECONOMY"
                 className="block rounded-lg border border-red-200 bg-red-50 p-4 transition-colors hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:hover:bg-red-900"
               >
-                <div className="font-medium">Different Flight Search (No Prerender)</div>
+                <div className="font-medium">
+                  Different Flight Search (No Prerender)
+                </div>
                 <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                   /en-id/flight/fullsearch (different params)
                 </div>

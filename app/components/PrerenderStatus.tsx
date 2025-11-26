@@ -2,42 +2,57 @@
 
 import { useEffect, useState } from "react";
 
+// Extend PerformanceNavigationTiming to include activationStart
+interface ExtendedPerformanceNavigationTiming
+  extends PerformanceNavigationTiming {
+  activationStart?: number;
+}
+
+function checkIfPrerendered(): boolean {
+  if (typeof window === "undefined" || !window.performance) {
+    return false;
+  }
+
+  // Use PerformanceNavigationTiming.activationStart to detect prerender
+  // A non-zero activationStart indicates the page was prerendered
+  const navEntry = performance.getEntriesByType(
+    "navigation"
+  )[0] as ExtendedPerformanceNavigationTiming;
+
+  if (navEntry && navEntry.activationStart !== undefined) {
+    // activationStart > 0 means page was prerendered
+    return navEntry.activationStart > 0;
+  }
+
+  return false;
+}
+
 export default function PrerenderStatus() {
-  const [wasPrerendered, setWasPrerendered] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
+  const [wasPrerendered, setWasPrerendered] = useState<boolean>(() =>
+    checkIfPrerendered()
+  );
 
   useEffect(() => {
-    // Check if document.prerendering is supported
-    if (typeof document === "undefined") {
-      setIsChecking(false);
-      return;
-    }
+    // Check if still in prerendering state
+    if (
+      typeof document !== "undefined" &&
+      "prerendering" in document &&
+      document.prerendering
+    ) {
+      // Listen for when prerendering completes
+      const handleActivation = () => {
+        setWasPrerendered(true);
+      };
 
-    // Check if page is currently being prerendered
-    if ("prerendering" in document && document.prerendering) {
-      setWasPrerendered(true);
+      document.addEventListener("prerenderingchange", handleActivation, {
+        once: true,
+      });
 
-      // Listen for when prerendering completes and page becomes visible
-      document.addEventListener(
-        "prerenderingchange",
-        () => {
-          setIsChecking(false);
-        },
-        { once: true },
-      );
-    } else {
-      setIsChecking(false);
+      return () => {
+        document.removeEventListener("prerenderingchange", handleActivation);
+      };
     }
   }, []);
-
-  if (isChecking && !wasPrerendered) {
-    return (
-      <div className="inline-flex w-fit items-center gap-2 rounded-full bg-zinc-200 px-4 py-2 text-sm dark:bg-zinc-800">
-        <div className="h-2 w-2 rounded-full bg-zinc-500" />
-        <span>Checking prerender status...</span>
-      </div>
-    );
-  }
 
   return (
     <div
@@ -54,7 +69,7 @@ export default function PrerenderStatus() {
             : "bg-blue-600 dark:bg-blue-400"
         }`}
       />
-      <span>{wasPrerendered ? "Prerendered" : "Normal Load"}</span>
+      <span>{wasPrerendered ? "✓ Prerendered" : "Normal Load"}</span>
     </div>
   );
 }
