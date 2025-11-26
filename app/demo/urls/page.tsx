@@ -84,7 +84,7 @@ export default function UrlsDemo() {
                 ✓ These WILL be prerendered (in URLs list):
               </h3>
               <div className="space-y-3">
-                <Link
+                <a
                   href="/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY"
                   className="block rounded-lg border border-green-200 bg-green-50 p-4 transition-colors hover:bg-green-100 dark:border-green-900 dark:bg-green-950 dark:hover:bg-green-900"
                 >
@@ -95,9 +95,9 @@ export default function UrlsDemo() {
                   <div className="mt-2 text-xs text-green-700 dark:text-green-400">
                     ✓ Exact URL match
                   </div>
-                </Link>
+                </a>
 
-                <Link
+                <a
                   href="/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY"
                   className="block rounded-lg border border-green-200 bg-green-50 p-4 transition-colors hover:bg-green-100 dark:border-green-900 dark:bg-green-950 dark:hover:bg-green-900"
                 >
@@ -108,7 +108,7 @@ export default function UrlsDemo() {
                   <div className="mt-2 text-xs text-green-700 dark:text-green-400">
                     ✓ Exact URL match
                   </div>
-                </Link>
+                </a>
               </div>
             </div>
 
@@ -116,7 +116,7 @@ export default function UrlsDemo() {
               <h3 className="mb-3 text-sm font-semibold text-red-700 dark:text-red-400">
                 ✗ This will NOT be prerendered (not in URLs list):
               </h3>
-              <Link
+              <a
                 href="/en-id/flight/fullsearch?ap=DPS.CGK&dt=01-01-2026.NA&ps=1.0.0&sc=ECONOMY"
                 className="block rounded-lg border border-red-200 bg-red-50 p-4 transition-colors hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:hover:bg-red-900"
               >
@@ -129,7 +129,7 @@ export default function UrlsDemo() {
                 <div className="mt-2 text-xs text-red-700 dark:text-red-400">
                   ✗ Different query parameters
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
 

@@ -13,6 +13,7 @@ export default function ProgressBar() {
     const timer = setInterval(() => {
       setProgress((prev) => {
         const next = prev + increment;
+        console.log("Updating progress...", next);
         if (next >= 100) {
           clearInterval(timer);
           return 100;
