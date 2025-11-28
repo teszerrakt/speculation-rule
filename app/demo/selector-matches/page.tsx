@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Metadata } from "next";
 import { SpeculationRules } from "@/components/SpeculationRules";
 import { PageContainer } from "@/components/PageContainer";
@@ -67,7 +66,7 @@ export default function SelectorMatchesDemo() {
               ✓ These WILL be prerendered (have .prerender-link class):
             </h3>
             <div className="space-y-3">
-              <Link
+              <a
                 href="/en-id/flight/fullsearch?ap=CGK.SIN&dt=28-12-2025.NA&ps=1.0.0&sc=ECONOMY"
                 className="prerender-link block rounded-lg border border-green-200 bg-green-50 p-4 transition-colors hover:bg-green-100 dark:border-green-900 dark:bg-green-950 dark:hover:bg-green-900"
               >
@@ -78,9 +77,9 @@ export default function SelectorMatchesDemo() {
                 <div className="mt-2 text-xs font-mono text-green-700 dark:text-green-400">
                   className="prerender-link"
                 </div>
-              </Link>
+              </a>
 
-              <Link
+              <a
                 href="/en-id/flight/fulltwosearch?ap=CGK.SIN&dt=28-12-2025.30-12-2025&ps=1.0.0&sc=ECONOMY"
                 className="prerender-link block rounded-lg border border-green-200 bg-green-50 p-4 transition-colors hover:bg-green-100 dark:border-green-900 dark:bg-green-950 dark:hover:bg-green-900"
               >
@@ -91,7 +90,7 @@ export default function SelectorMatchesDemo() {
                 <div className="mt-2 text-xs font-mono text-green-700 dark:text-green-400">
                   className="prerender-link"
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
 
@@ -99,7 +98,7 @@ export default function SelectorMatchesDemo() {
             <h3 className="mb-3 text-sm font-semibold text-red-700 dark:text-red-400">
               ✗ This will NOT be prerendered (no .prerender-link class):
             </h3>
-            <Link
+            <a
               href="/en-id/flight/fullsearch?ap=DPS.CGK&dt=01-01-2026.NA&ps=1.0.0&sc=ECONOMY"
               className="block rounded-lg border border-red-200 bg-red-50 p-4 transition-colors hover:bg-red-100 dark:border-red-900 dark:bg-red-950 dark:hover:bg-red-900"
             >
@@ -112,7 +111,7 @@ export default function SelectorMatchesDemo() {
               <div className="mt-2 text-xs font-mono text-red-700 dark:text-red-400">
                 No prerender-link class
               </div>
-            </Link>
+            </a>
           </div>
         </Card>
 
