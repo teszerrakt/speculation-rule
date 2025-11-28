@@ -1,5 +1,8 @@
 import Link from "next/link";
 import ProgressBar from "@/app/components/ProgressBar";
+import { Card } from "@/components/ui/Card";
+import { QueryParamsDisplay } from "@/components/ui/QueryParamsDisplay";
+import { buildPathWithParams } from "@/lib/query-params";
 
 export default async function FullTwoSearchPage({
   searchParams,
@@ -7,21 +10,7 @@ export default async function FullTwoSearchPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
-
-  // Construct the full URL path
-  const queryString = new URLSearchParams(
-    Object.entries(params).reduce(
-      (acc, [key, value]) => {
-        if (value !== undefined) {
-          acc[key] = Array.isArray(value) ? value[0] : value;
-        }
-        return acc;
-      },
-      {} as Record<string, string>,
-    ),
-  ).toString();
-
-  const fullPath = `/en-id/flight/fulltwosearch${queryString ? `?${queryString}` : ""}`;
+  const fullPath = buildPathWithParams("/en-id/flight/fulltwosearch", params);
 
   return (
     <div className="grid min-h-screen items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
@@ -30,7 +19,7 @@ export default async function FullTwoSearchPage({
           <h1 className="text-4xl font-bold">Flight Search (Round Trip)</h1>
         </div>
 
-        <div className="w-full rounded-lg border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+        <Card className="w-full">
           <h2 className="mb-4 text-xl font-semibold">Page Information</h2>
 
           <div className="space-y-3">
@@ -43,34 +32,9 @@ export default async function FullTwoSearchPage({
               </p>
             </div>
 
-            <div>
-              <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                Query Parameters:
-              </span>
-              <div className="mt-2 space-y-1">
-                {Object.keys(params).length > 0 ? (
-                  Object.entries(params).map(([key, value]) => (
-                    <div
-                      key={key}
-                      className="flex gap-2 rounded bg-zinc-100 p-2 font-mono text-sm dark:bg-zinc-800"
-                    >
-                      <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-                        {key}:
-                      </span>
-                      <span className="text-zinc-600 dark:text-zinc-400">
-                        {Array.isArray(value) ? value.join(", ") : value}
-                      </span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-zinc-500 dark:text-zinc-500">
-                    No query parameters
-                  </p>
-                )}
-              </div>
-            </div>
+            <QueryParamsDisplay params={params} />
           </div>
-        </div>
+        </Card>
 
         <div className="w-full">
           <ProgressBar />
